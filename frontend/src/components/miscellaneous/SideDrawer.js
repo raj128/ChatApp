@@ -53,11 +53,15 @@ function SideDrawer() {
   const history = useHistory();
 
   const logoutHandler = () => {
-    if (user) {
-      socket.emit("update_user_status", { userId: user._id, status: "offline" });
-    }
     localStorage.removeItem("userInfo");
-    document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    if (user) {
+      socket.emit("update_user_status", {
+        userId: user._id,
+        status: "offline",
+      });
+    }
     history.push("/");
   };
 

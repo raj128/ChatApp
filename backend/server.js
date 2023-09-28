@@ -51,7 +51,6 @@ const server = app.listen(
 );
 
 const io = require("socket.io")(server, {
-  pingTimeout: 60000,
   cors: {
     origin: "http://localhost:3000",
     // credentials: true,
@@ -64,7 +63,7 @@ const broadcastUserStatusChange = (userId, status) => {
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
   socket.on("setup", (userData) => {
-    userStatuses[userData._id] = "online";
+    userStatuses[userData?._id] = "online";
     broadcastUserStatusChange(userData._id, "online");
     console.log("User Joined : " + userData._id);
     socket.join(userData._id);
@@ -90,9 +89,10 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.off("setup", () => {
-    if (userStatuses[userData._id] === "online") {
-      userStatuses[userData._id] = "offline";
+  socket.on("disconnect", (userData) => {
+    // Ensure userData is defined and passed properly
+    if (userStatuses[userData?._id] === "online") {
+      userStatuses[userData?._id] = "offline";
       broadcastUserStatusChange(userData._id, "offline");
     }
     console.log("USER DISCONNECTED");
