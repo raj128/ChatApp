@@ -1,4 +1,4 @@
-# Iambesideyou-ChatApp-Project
+# Talky-ChatApp-Project
 ### Student Detail
 Name : Raj Gautam  
 University : IIT Dhanbad  
